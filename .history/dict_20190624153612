@@ -1,0 +1,14 @@
+1.bannner
+    ID
+    title       标题     varchar(32)
+    sub_title   副标题    varchar(16)
+    src         图片地址  varchar(64)
+
+2.article
+    ID
+    author      作者
+    author_src  作者头像
+    title       标题
+    post_time   发布时间(s)
+
+3.user

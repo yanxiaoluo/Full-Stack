@@ -1,0 +1,20 @@
+doctype
+html
+    head
+        meta(charset="utf-8")
+        link(rel="stylesheet", href="/css/main.css")
+        script(src="main.js")
+    body
+        div(class="page main")
+            ul.list
+            each a in arr
+                li=a
+
+            p.
+                我是第一行
+                我是第二行
+                我是第三行
+            
+            span 用户名字
+                = name
+                = a+b

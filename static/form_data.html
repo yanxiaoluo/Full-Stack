@@ -1,0 +1,59 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="jquery.js"></script>
+    <script>
+        window.onload = function () {
+            let ouser = document.getElementById('user')
+            let opass = document.getElementById('pass')
+            let obtn = document.getElementById('btn1')
+            let ofile = document.getElementById('f1')
+
+            obtn.onclick = function () {
+                let data = new FormData()
+                data.set('user', ouser.value)
+                data.set('pass', opass.value)
+
+                let oajax = new XMLHttpRequest()
+                //GET
+                let arr = []
+                data.forEach((val, key) => {
+                    arr.push(`${encodeURIComponent(key)}=${encodeURIComponent(val)}`)
+                })
+                oajax.open('GET', `http://localhost:2020/api?${arr.join('&')}`, true)
+                oajax.send()
+
+                //POST
+                // Array.from(ofile.files).forEach(item => {
+                //     data.append('f1', item)
+                // })
+
+                // oajax.open('POST', `http://localhost:2020/api`, true)
+                // oajax.setRequestHeader('Content-Type', 'multipart/form-data')
+                // oajax.send(data)
+
+                oajax.onreadystatechange = function () {
+                    if (oajax.readyState == 4) {
+                        if (oajax.status >= 200 && oajax.status < 300 || oajax.status == 304) {
+                            alert('成功')
+                        } else {
+                            alert('失败')
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <form action="http://localhost:9090/bbb" method="post" enctype="multipart/form-data">
+        username: <input type="text" name="user">
+        password: <input type="password" name="pass">
+        <input type="file" name="f1">
+        <input type="submit" value="submit" id="submit">
+    </form>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="jquery.js"></script>
+    <script src="http://localhost:2020/socket.io/socket.io.js"></script>
+    <script>
+        let sock = io.connect('ws://localhost:2020/')
+
+        sock.on('connect', () => {
+            $('#err-box').css('display', 'none')
+            console.log('已连接')
+        })
+
+        sock.on('disconnect', () => {
+            $('#err-box').css('display', 'block')
+            console.log('已断开')
+        })
+
+        $(function () {
+            $('#send-btn').click(() => {
+                sock.emit('msg', $('#msg-area').val())
+                let li = `<li class="self-msg">${$('#msg-area').val()}</li>`
+                $('#chat').append(li)
+                $('#msg-area').val('')
+            })
+
+            sock.on('msg', str => {
+                let li = `<li>${str}</li>`
+                $('#chat').append(li)
+            })
+        })
+    </script>
+    <style>
+        #chat {
+            width: 400px;
+            height: 300px;
+            border: 1px solid black;
+            overflow: auto;
+        }
+        .self-msg {
+            color: green;
+        }
+        #err-box {
+            text-align: center;
+            color: red;
+            width: 400px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="err-box">请检查您的网络</div>
+    <ul id="chat"></ul>
+    <textarea cols="70" rows="3" id="msg-area"></textarea>
+    <input type="button" value="send" id="send-btn">
+    <br/>
+</body>
+</html>

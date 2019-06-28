@@ -1,0 +1,5 @@
+1.bannner
+    ID
+    title       标题     varchar(32)
+    sub_title   副标题    varchar(16)
+    src         图片地址  varchar(64)

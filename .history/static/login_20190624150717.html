@@ -1,0 +1,61 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="jquery.js"></script>
+</head>
+<body>
+    username: <input type="text" id="user">
+    password: <input type="password" id="pass">
+    files: <input type="file" id="f1" multiple>
+    <input type="button" value="btn1" id="btn1">
+    <input type="button" value="register" id="reg">
+    <input type="button" value="login" id="login">
+    <script>
+        
+        $(function() {
+            $('#reg').click(function(){
+                $.ajax({
+                    url: '/reg',
+                    data: { user: $('#user').val(), pass: $('#pass').val() },
+                    dataType: 'json',
+                    type: 'GET',
+                    success (json) {
+                        // let json = eval('('+ str +')')
+                        if (json.err) {
+                            alert('注册失败'+json.msg)
+                        } else {
+                            alert('注册成功')
+                        }
+                    },
+                    error () {
+                        alert('请求失败')
+                    }
+                })
+            })
+
+            $('#login').click(function(){
+                $.ajax({
+                    url: '/login',
+                    data: { user: $('#user').val(), pass: $('#pass').val() },
+                    dataType: 'json',
+                    type: 'GET',
+                    success (json) {
+                        // let json = eval('('+ str +')')
+                        if (json.err) {
+                            alert('登陆失败'+json.msg)
+                        } else {
+                            alert('登陆成功')
+                        }
+                    },
+                    error () {
+                        alert('请求失败')
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+</html>
