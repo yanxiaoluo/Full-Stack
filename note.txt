@@ -186,9 +186,14 @@ SQL > Structured Query Language(结构化查询语句)
 
 ----------------------------------------------------------------------------------
 
+文档型数据库
+mongoDB
+
+关系型数据库
 mysql
     增  INSERT
         INSERT INTO user_table (ID, name, age) VALUES(0, 'YANXL', 18)
+        INSERT INTO user_table (ID, name, age) VALUES(),(),(),()
     删  DELETE
         DELETE FROM user_table WHERE ID=1
     改  UPDATE
@@ -346,6 +351,10 @@ koa
         C   持久性：只要事务提交了，它的作用就是永久
         I   隔离性：各个事务之间是独立
         D   一致性：事务前后的状态是一致的
+
+        db.startTransaction()
+        db.excuteTransaction(sql)
+        db.stopTransaction()
 
 ----------------------------------------------------------------------------------
 

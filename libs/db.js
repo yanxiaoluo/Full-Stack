@@ -1,5 +1,5 @@
-const Mysql = require('mysql-pro')
-const config = require('../koa_config.js')
+const Mysql = require('mysql-pro');
+const config = require('../libs/koa_config.js');
 
 let db = new Mysql({
     mysql: {
