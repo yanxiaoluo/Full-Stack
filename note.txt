@@ -10,8 +10,263 @@ Array.prototype.find = Array.prototype.find || function (item) {
     return null
 }
 
+使用String()函数做强制类型转换时
+    对于Number和Boolean实际上就是调用toString()方法
+    对于null和undefined是直接转换成"null""undefined"
+
+使用Number()函数
+    - 字符串--->数字
+        如果是纯数字的字符串，直接转数字        "123"=>123
+        如果字符串有非数字的内容，转NaN         "abc"=>NaN
+        如果字符串是一个空串或者全是空格，转0   ""=>0   "     "=>0
+    - 布尔--->数字
+        true=>1
+        false=>0
+    - Null=>0
+    - undefined=>NaN
+    - parseInt()、parseFloat()可以将一个字符串中的以数字开头的有效整数/浮点数内容取出然后转换成Number
+      如果对非String使用会将其先转String再操作  parseInt(true)=>NaN
+
+使用Boolean()函数
+    - 数字--->布尔
+        除了0和NaN，其余都是true
+    - 字符串--->布尔
+        除了空串，其余都是true
+    - null和undefined都是false
+    - 对象也会转true
+    - 为任意的数据类型做两次非运算，即可将其转换为布尔值
+        let a = "hello"
+        a = !!a => true
+
+typeof运算符用来获取一个值的类型，并将该值类型以字符串的形式返回
+    - number string boolean undefined object
+
+算数运算符
+    - 当对非Number类型的值进行运算时，会将这些值转换成number再运算
+    - 任何值和NaN进行运算都是NaN
+    - 任何值和字符串做加法运算，都会先转换为字符串，然后再和字符串做拼串
+    - 除了加法运算外，所有值和数字做运算都会先转成数字再运算
+    - 无论是a++还是++a，都会立即使原变量的值自增1
+    - 不同的是a++的值等于原变量的值，++a的值等于新值
+      
+16进制以0x开头  0x10、0xff、0xCafe
+8进制以0开头    070
+2进制以0b开头   ob10
+像"070"这种字符串，有些浏览器会当成8进制解析，有些会当成10进制解析
+可以在parseInt传递第二个参数来指定数字的进制
+
+
 -S -> 生产依赖
 -D -> 开发依赖
+
+----------------------------------------------------------------------------------
+
+function throttle(fn, delay) {
+    let lastTime = 0
+    return function () {
+        let nowTime = Date.now()
+        if (nowTime - lastTime > delay) {
+            fn.call(this)
+            lastTime = nowTime
+        }
+    }
+}
+
+function debounce(fn, delay) {
+    let timer = null
+    return function () {
+        clearTimeOut(timer)
+        timer = setTimeOut(function(){
+            fn.aplly(this)
+        }, delay)
+    }
+}
+
+一个url到最终页面渲染完成，发生了什么？
+1、DNS解析：将域名解析为ip地址
+    - 浏览器DNS缓存
+    - 系统DNS缓存
+    - 路由器DNS缓存
+    - 网络运营商DNS缓存
+    - 递归搜索： blog.baidu.com
+        - .com域名下查找DNS解析
+        - .baidu域名下查找DNS解析
+        - .blog域名下查找DNS解析
+        - 出错了
+
+2、TCP连接：TCP三次握手
+    - 第一次握手，浏览器发起，告诉服务器我要发送请求了
+    - 第二次握手，服务器发起，告诉浏览器我准备接受了，你赶紧发送吧
+    - 第三次握手，浏览器发起，告诉服务器，我马上就发了，准备接受吧
+
+3、发送请求
+    - 请求报文：HTTP协议的通信内容
+
+4、接受响应
+    - 响应报文
+
+5、渲染页面
+    - 遇见HTML标记，调用HTML解析器解析成Token并构建DOM树
+    - 遇见style/link标记，调用css解析器，处理css并构建cssom树
+    - 遇见script标记，调用javaScript解析器，处理script代码（绑定事件，修改dom树/cssom树）
+    - 将dom树和cssom树合并成一个渲染树
+    - 根据渲染树来计算布局，计算每个节点的几何信息（布局）
+    - 将各个节点颜色回执到屏幕上（渲染）
+
+    注意：
+        这五个步骤不一定按照顺序执行，如果dom树或cssom树被修改了，可能会执行多次布局和渲染
+        旺旺实际页面中，这些步骤都会执行多次
+
+6、断开连接：TCP四次挥手
+    - 第一次挥手，浏览器发起，发送给服务器，我东西发送完了（请求报文），你准备关闭吧
+    - 第二次挥手，服务器发起，告诉浏览器，我东西接受完了（请求报文），我准备关闭了，你也准备吧
+    - 第二次挥手，服务器发起，告诉 浏览器，我东西发送完了（响应报文），你准备关闭吧
+    - 第四次挥手，浏览器发起，告诉服务器，我东西接受完了（响应报文），我准备关闭了，你也准备吧
+
+
+什么是闭包？
+    1、密闭的容器，类似于set、map容器，存储数据的
+    2、闭包是一个对象，存放数据的格式：key：value
+
+形成的条件：
+    1、函数嵌套
+    2、内部函数引用外部函数的局部变量
+
+闭包的优点：延长外部函数局部变量的生命周期
+闭包的缺点：容易造成内存泄漏
+
+注意点：
+    1、合理的使用闭包
+    2、用完闭包要及时清除（销毁）
+
+变量提升
+js引擎在代码正是执行之前会做一个预处理的工作
+    1、收集变量
+    2、收集函数
+
+执行上下文(execute context) EC
+    理解：代码执行的环境
+    时机：代码正式执行之前会进入到执行环境
+    工作：
+        1、创建变量对象：
+            - 变量
+            - 函数及函数的参数
+            - 全局：window
+            - 局部：抽象的但是确实存在
+        2、确认this的指向
+            - 全局：this--->window
+            - 局部：this--->调用其的对象
+        3、创建作用域链
+            父级作用域链 + 当前的变量对象
+
+
+宏任务
+    分类：setTimeOut setInterval requestAnimationFrame
+    1、宏任务所处的队列就是宏任务队列
+    2、第一个宏任务队列中只有一个任务：执行主线程的js代码
+    3、宏任务可以有多个
+
+微任务
+    分类：new Promise().then(回调) process.nextTick
+    1、微任务所处的队列就是微任务队列
+    2、只有一个微任务队列
+    3、在上一个宏任务队列执行完毕后如果有微任务队列就会执行微任务队列中的所有任务
+
+
+比较Vue和React
+    相同点：
+        1、都有组件化开发和virtual DOM
+        2、都支持props进行父子组件间数据通信
+        3、都支持数据驱动视图，不直接操作真实DOM，更新状态数据界面就自动更新
+        4、都支持服务器渲染
+        5、都有支持native的方案，React的React Native，Vue的Weex
+
+    不同点：
+        1、数据绑定：vue实现了数据的单项绑定（内存-界面，界面-内存），react数据流动是单向的（内存到界面的变化）
+        2、组件写法不一样，react推荐JSX，也就是把HTML、CSS全都写进JavaScript；
+           vue推荐的做法是webpack+vue-loader的单文件组件格式，即HTML、CSS、JS写在同一个文件
+        3、state对象在react应用中不可变，需要使用setState方法更新状态
+           在vue中state对象不是必须的，数据由data属性在vue对象中管理
+        4、virtual DOM不一样，vue会跟踪每一个组件间的依赖关系，不需要重新渲染整个组件树
+           而react每当应用的状态被改变是，全部组件都会重新渲染，所以react中会需要shouldcomponentupdate这个生命周期函数方法来进行控制
+        5、react严格上只针对MVC的view层，vue则是MVVM模式
+
+
+Redux
+    1、redux是一个独立专门用于做状态管理的js库，不是react插件库
+    2、它可以用在react、angular、vue等项目中，但基本与react配合使用
+    3、作用：集中式管理react应用中多个组件共享的状态和从后台获取的数据
+
+vue通信方式
+    1、父-->子通信
+    2、子-->父通信
+    3、隔代组件间通信
+    4、兄弟组件间通信
+
+通信实现
+    1、props
+        - 通过一般属性实现父向子通信
+        - 通过函数属性实现子向父通信
+        - 缺点：隔代组件和兄弟组件间通信比较麻烦
+    2、vue自定义事件
+        - vue内置实现，可以代替函数类型的props
+            a.绑定监听：<MyComp @eventName="callback"
+            b.触发（分发）事件this.$emit("eventName", data)
+        - 缺点：只适合父子间通信
+    3、消息订阅与发布
+        - 需要引入消息订阅与发布的实现库，如pubsub.js
+            a.订阅消息：PubSub.subscribe('msg', (msg, data)=>{})
+            b.发布消息：PubSub.publish('msg', data)
+        - 优点：此方式可用于任意关系组件间通信
+    4、vuex
+        - vuex是vue官方提供的集中式管理vue多组件共享状态数据的vue插件
+          集中式管理vue多个组件共享的状态和从后台获取的数据
+        - 优点：对组件间关系没有限制，且相比于pubsub库管理更集中，更方便
+    5、slot
+        - 专门用来实现父向子传递带数据的标签
+        - 注意：通信的标签模板是在父组件中解析好后再传递给子组件的
+
+
+数组扁平化
+let arr = [0,[1,2,3],[4,[5,[6,7],8]]]
+function flattenArray(arr) {
+    let _arr = []
+    for (let i = 0; i < arr.length; i++) {
+        //判断数组的方法
+        if (!Array.isArray(arr[i])) {
+            _arr.push(arr[i])
+        } else {
+            _arr = _arr.concat(flattenArray(arr[i]))
+        }
+    }
+    return _arr
+}
+鸭式变形说的是从事物特征去判断它是什么
+IE6\IE7判断是不是数组
+function checkIsArray (o) {
+    return Object.prototype.toString.call(o) == "[object Array]" && "push" in o
+}       
+
+函数curry化
+function curry(fn) {
+    return function () {
+        let args = arguments
+        return function () {
+            return fn(...args, ...arguments)
+        }
+    }
+}
+
+function fun (a,b,c,d) {
+    return a+b+c+d
+}
+
+let f = curry(fun)
+
+----------------------------------------------------------------------------------
+
+语言发展史
+    机器语言——汇编语言——低级语言（面向过程）——高级语言（面向对象）——模块系统——框架——系统接口（API）
 
 ----------------------------------------------------------------------------------
 
