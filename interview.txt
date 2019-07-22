@@ -1,0 +1,17 @@
+普通函数this指向如何改变
+1、局部变量代替this指针
+    let _this = this
+2、使用call或者apply或者bind
+
+箭头函数：箭头函数本身是没有this和arguments的，在箭头函数中引用this实际上是调用的是定义时的上一层作用域的this。
+这里强调的是上一层作用域，是因为对象是不能形成独立的作用域的。
+
+盒模型分为w3c模型和ie盒模型
+1、w3c  content（height，width）、padding、border、margin
+2、IE   content、padding、border（height，width）、margin
+3、box-sizing
+    content-box	宽度和高度不包括边框和填充
+    border-box	宽度和高度包括边框和填充
+
+CSS伪元素是用来添加一些选择器的特殊效果。
+CSS伪类是用来添加一些选择器的特殊效果。
