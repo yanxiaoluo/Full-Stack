@@ -39,7 +39,7 @@ function ajax (options) {
                         break;
                 }
                 
-                options.success && options.success()
+                options.success && options.success(data)
             } else {
                 options.error && options.error()
             }
