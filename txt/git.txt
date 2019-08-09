@@ -1,0 +1,36 @@
+提交commit信息
+git log
+git log --pretty=oneline
+git log --oneline
+git reflog
+
+从暂存区移除文件
+git rm --cahed [file name]
+
+打开文件
+cat [file name]
+
+前进后退
+    - 索引值
+        git reset --hard [scope index value]
+
+    - 使用^符号
+        git reset --hard HEAD^  一个表示后退一步，多个表示后退多步
+
+    - reset参数
+        --soft  仅在本地库移动head指针
+        --mixed 在本地库移动head指针、重置暂存区
+        --hard  在本地库移动head指针、重置暂存区、重置工作区
+
+比较文件差异
+    - git diff [file name]  将工作区中的文件和暂存区进行比较
+    - git diff [本地库中历史版本] [文件名]  将工作区中的文件和本地库历史记录比较
+    - git diff  查看多个文件进行比较
+
+分支操作
+    - git branch [分支名]    创建分支
+    - git branch -v 查看分支
+    - git checkout [分支名]
+    - git merge
+
+git底层采用的是sha1算法 

@@ -61,6 +61,43 @@ typeof运算符用来获取一个值的类型，并将该值类型以字符串�
 
 ----------------------------------------------------------------------------------
 
+物理像素
+    - 屏幕的分辨率
+    - 设备能控制显示的最小单元，可以把物理像素看成是对应的像素点 
+
+设备独立像素 & CSS像素
+    - 虚拟像素
+    - 可以认为是计算机坐标系统的一个点，这个点代表一个可以由程序使用并控制的虚拟像素，然后由相关系统转换为物理像素
+
+dpr比 & DPI & PPI
+    - dpr：设备像素比，物理像素/设备独立像素，一般以iPhone6的dpr为准dpr=2
+    - PPI：一英寸显示屏上的像素点个数
+    - DPI：打印机在单位面积上打印的墨点数，墨点越多越清晰
+
+----------------------------------------------------------------------------------
+
+小程序适配方案
+    iPhone6：1rpx = 1 物理像素 = 0.5px
+
+冒泡事件    bindtap
+非冒泡事件  catchtap
+
+模板template
+    - 定义：template属性name标识模板
+    - 使用：template属性is模板的name
+    - 引入模板结构：<import src='路径'/>
+    - 引入模板样式：@import '路径'
+    - 传参：data='{{...item}}'
+
+列表渲染
+    - wx:for
+    - wx:key为每个个体元素进行标记
+    - 遍历的个体：item
+    - 遍历的下表：index
+
+wx.showLoading
+----------------------------------------------------------------------------------
+
 function throttle(fn, delay) {
     let lastTime = 0
     return function () {
@@ -443,6 +480,215 @@ SQL > Structured Query Language(结构化查询语句)
 
 文档型数据库
 mongoDB
+    mongod --dbpath path --port port    指定数据存的地址和端口（端口号最大不要超过65535）
+
+    数据库的服务端
+        - 服务器用来保存数据
+        - mongod用来启动服务器
+    数据库的客户端
+        - 用来操作服务器，对数据进行增删改查的操作
+        - mongo用来启动客户端
+
+    三个概念
+        - 数据库    一个仓库，可以存放集合
+        - 集合      类似数组，在集合中可以存放文档
+        - 文档      文档数据库中的最小单位，存储和操作的都是文档
+
+    常用命令
+        show dbs
+        use test    进入指定数据库中
+        db          当前数据库
+        show collections    查看数据库中所有集合
+
+    数据库的CRUD的操作
+        - 插入文档
+            db.<collection>.insert(doc)
+                db.<collection>.insertOne()
+                db.<collection>.insertMany()
+                - 向集合中插入一个或多个文档
+                db.stus.insert({name: "yanxl", age: 25, gender: "girl"})
+                db.stus.insert([
+                    {name: "yanxl", age: 25, gender: "girl"},
+                    {name: "yanxl", age: 25, gender: "girl"},
+                    {name: "yanxl", age: 25, gender: "girl"}
+                ])
+
+        - 查询文档
+            db.<collection>.find()
+                db.find({age: 25})
+                db.findOne({age: 25})
+                db.find({}).count()
+                - 查询当前集合中的所有文档
+                - 支持内嵌文档属性查询，通过.的形式匹配，属性名必须使用引号
+                    db.users.find({"hobby.movies": "hero"})
+                - $gt/$lt/$eq/$gte  大于/小于/等于/大于等于
+                - db.emp.find({$or: [{sal: {$lt: 1000}, {sal: {$gt: 2500}}}]})或修饰符
+                - db.emp.find().sort({sal: 1/-1, empno: -1})指定文档排序规则
+                - limit skip sort可以任意顺序调用
+                - db.find({}, {ename: 1, _id: 0})指定想显示的字段
+
+        - 修改文档
+            db.<collection>.update()
+                db.<collection>.updateOne()
+                db.<collection>.updateMany()
+                db.<collection>.replaceOne()
+                - 默认只修改一个
+                - 默认替换
+                    db.media.update({name: "yanxl"},{name: "yanxl",gender: "boy",age: 8})
+                - 修改操作符$set修改文档指定属性
+                    db.media.update(
+                    {name: "yanxl111"}, 查询内容
+                    {$set: {            修改内容
+                        gender: "boy",
+                        gehe: 8
+                    }}
+                    )
+                - 修改操作符$unset删除指定属性
+                - $push向数组添加一个新元素
+                - $addToSet向数组添加一个不重复的新元素
+                - $inc增加
+                    db.emp.update({sal: {$lt: 1000}, {$inc: 400}})
+
+        - 删除文档
+            db.<collection>.remove()
+                db.<collection>.deleteOne()
+                db.<collection>.deleteMany()
+                - 默认删除多个
+                - remove必须传参，传空参清除集合
+                
+        db.collection.drop()清空集合，性能更高
+        db.dropdatabase()清空数据库
+
+        - 条件
+            db.<collection>.limit(10)
+            db.<collection>.skip(10).limit(10)
+
+        - 一对一
+            通过内嵌文档形式来体现
+            db.wifeAndHusband([
+                {
+                    name: "黄蓉",
+                    husband: {
+                        name: "郭靖"
+                    }
+                },{
+                    name: "习近平",
+                    husband: {
+                        name: "彭丽媛"
+                    }
+                },
+            ])
+
+        - 一对多/多对一
+            文章 - 评论
+            用户 - 订单
+            db.users.insert([
+                {username: "swk"},
+                {username: "zbj"},
+            ])
+            db.orders.insert({
+                list: ['apple','banana'],
+                user_id: users.id
+            })
+            通过一个文档的id查询另一个文档的内容
+            let user_id = db.users.findOne({username: "yanxl"})._id
+            db.orders.find(user_id: user_id)
+
+        - 多对多
+            老师 - 学生
+            db.teachers.insert([
+                {teacher: 'hqg'},
+                {teacher: 'hys'},
+                {teacher: 'gxr'},
+            ])
+            db.stus.insert([
+                {
+                    name: 'gj',
+                    teach_id: ['hqg', 'hys']
+                }
+            ])
+
+----------------------------------------------------------------------------------
+
+mongoose
+创建
+Model.create(doc(s), [callback])
+    - 创建一个或多个文档并添加到数据库中
+
+查询
+Model.find(conditions, [projection], [options], [callback])
+
+Model.findById(id, [projection], [options], [callback])
+
+Model.findOne([conditions], [projection], [options], [callback])
+
+    conditions  查询条件
+
+    projection  投影
+        - "name age -_id"
+        - {name: 1, _id: 0}
+
+    options     查询选项（skip limit）
+        - {skip: 10, limit: 1}
+
+修改
+Model.update(conditions, doc], [options], [callback])
+
+Model.updateMany(conditions, doc, [options], [callback])
+
+Model.updateOne(conditions, doc, [options], [callback])
+
+Model.replaceOne(conditions, doc, [options], [callback])
+
+    conditions  查询条件
+
+    doc 修改后的对象
+
+    options 配置参数
+
+删除
+Model.remove(conditions, [callback])
+
+Model.deleteOne(conditions, [callback])
+
+Model.deleteMany(conditions, [callback])
+
+统计
+Model.count(conditions, [callback])
+    - 比find().length性能更高
+
+document和集合中的文档一一对应，document是model的实例，通过model查询的的结果都是document
+
+document对象的方法
+    save
+    update
+    remove
+    get
+    set
+    id
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------
 
 关系型数据库
 mysql

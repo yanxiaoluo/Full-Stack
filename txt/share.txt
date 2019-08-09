@@ -1,0 +1,16 @@
+2019.8.3
+flink
+    - 大数据框架，流式批处理，例如实时(5min)统计(1h内)商品点击量的前三名需要用到
+    - 类似的还有Hadoop(批处理),Storm(流处理),Samza(流处理)等
+    - stream API
+        Data Source
+        transformation
+        Data Sink
+
+    - flink 关系型API （table API sql）
+    - flink状态管理（state）
+    - 水印（watermark）
+    - 触发器（trigger）
+    - 清除器
+    - 迟到生存周期
+    - 低层次的Join(Low-Level Joins)
