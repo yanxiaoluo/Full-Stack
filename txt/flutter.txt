@@ -1,0 +1,181 @@
+StatelessWidget
+    无状态组件，状态不可变的widget
+
+StatefulWidget
+    有状态组件，持有的状态可能在widget生命周期改变
+    如果想改变页面中的数据的话这个时候就需要用到
+    - setState
+
+Container
+    - SizedBox(height: 10)  设置一个盒子
+    - Divider   设置一根线
+
+Padding
+    - padding   padding值，edgeinsets设置填充的值
+    - child     子组件
+
+Column
+    - mainAxisAlignMent 主轴的排序方式
+    - crossAxisAlignMent 主轴的排序方式
+    - children  组件子元素
+
+Row
+    - mainAxisAlignMent 主轴的排序方式
+    - crossAxisAlignMent 主轴的排序方式
+    - children  组件子元素
+
+Expanded——可以用在row和column布局中
+    - flex  父元素占整个父row/column的比例
+    - child 子元素
+
+图片组件
+    image.network() 远程图片
+    image.assets()  本地图片
+
+    - alignment 图片对齐方式
+    - fit   图片填充方式
+    - ClipOval 设置一个圆形图片
+
+列表组件——ListView
+    - leading
+    - training
+    - title
+    - subtitle
+    - CircleAvatar  组件更适合处理圆形头像
+
+    * 水平列表中宽度是自适应，垂直列表中高度是自适应
+    * 不能再嵌套listview组件
+    * ListView.builder(
+        itemCount: this.list.length,
+        itemBuilder: (context, index){
+            return ...
+        }
+    )
+
+GridView
+    - crossAxisCount    一行放几个
+    - crossAxisSpacing  横轴间距
+    - mainAxisSpacing   纵轴间距
+    - childAspectRatio  长宽比
+
+Stack——层叠组件
+    - crossAxisAlignMent    配置所有子元素的显示位置
+    - children  子组件
+    - 结合Align使用
+        alignment/child
+    - 结合Positioned使用
+        left/right/top/bottom
+
+AspectRatio
+    - 根据设置调整子元素child的宽高比
+    - aspectRatio   宽高比
+    - child
+
+card
+    - margin    外边距
+    - child     子组件
+    - shape     card的阴影效果，默认的阴影效果为圆角的长方形边
+
+Warp
+    - 实现一个流组件
+    - direction     主轴的方向，默认水平
+    - alignment     主轴的对齐方式
+    - spacing       主轴方向上的间距、
+    - textdirection 文本方向
+    - verticaldirection 定义children摆放顺序，默认是down，见flex相关属性介绍
+    - runSpacing    run的间距
+    - alignment: WrapAlignment
+    - runAlignment: WrapAlignment   run的对齐方式，run可以理解为新的行或者列，如果是水平方向布局的话，run可以理解为新的一行
+
+RisedButton
+    - 定义一个按钮
+
+BottomNavigationBar
+    - itmes     List BottomNavigationBarItem 底部导航条按钮集合
+    - iconSize  icon
+    - currentIndex  默认选中第几个
+    - onTap     选中变化回调函数
+    - fixedColor    选中的颜色
+    - type: BottomNavigationBarType.fixed      配置底部tabs可以有多个按钮
+
+基本路由
+    - 需要引入
+    - Navigator.of(context).push()  跳转页面
+    - Navigator.of(context).pop()   返回上一个页面
+    - builder: (context) => FormPage(title: "我是跳转传值") 跳转页面传值
+
+命名路由
+    - Navigator.pushNamed(context, '/search');
+    - Navigator.pushNamed(context, '/search', arguments: { "id": 123 });传参
+
+替换路由
+    - Navigator.of(context).pushReplacementNamed()  
+
+替换路由之后返回根路由
+    - Navigator.of(context).pop()   也可以隐藏侧边栏
+
+普通路由返回根路由
+    - Navigator.of(context).pushAndRemoveUntil(
+        new MaterialPageRoute(builder: (context) => new Tab()), 
+        (route) => route == null
+      );
+
+自定义AppBar
+    - backgroundColor
+    - centerTitle
+    - leading
+    - 顶部tab切换
+        - 在Scaffold外层添加DefaultTabController组件
+        - 在body中加TabBarView
+    - isScrollable  多个tab需要滑动
+    - TabController 实现tab的另一种方式，可以结合使用setstate
+
+生命周期函数
+    - initState
+    - dispose
+
+侧边栏
+    - Drawer
+        - DrawerHeader
+
+按钮组件
+    - RaisedButton      凸起按钮
+    - FlatButton        扁平化按钮
+    - OutlineButton     线框按钮
+    - IconButton        图标按钮
+    - ButtonBar         按钮组
+    - FloatingActionButton      浮动按钮
+    -设置按钮形状
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))
+        shape: CircleBorder(side: BorderSide(color: Colors.blue))
+
+表单组件
+    - TextField单行文本框
+    - TextField多行文本框
+        - maxLines      单行改为多行
+        - onChanged     文本框改变时触发的事件
+        - decoration
+            - hintText      
+            - border
+            - labelText
+            - labelStyle
+        - obscureText   把文本框改为密码框
+        - controller    结合可以配置表单默认显示的内容
+    - CheckBox
+    - Radio
+    - Switch
+    - CheckBoxListTile
+    - RadioListTile
+    - SwitchListTile
+    - Slide
+
+日期组件
+    - 官方组件
+    - DateTime.now()    获取当前日期
+    - now.millisecondsSinceEpoch    转换为时间戳
+    - DateTime.fromMicrosecondsSinceEpoch(1568604277028)    时间戳转换为日期
+
+    - 第三方库date_format
+
+    - 调用flutter自带日期组件和时间组件改为中文
+        - https://blog.csdn.net/weixin_30512027/article/details/84547036

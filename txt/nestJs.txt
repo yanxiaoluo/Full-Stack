@@ -1,0 +1,58 @@
+介绍
+    - 是一个渐进的nodejs框架，可以在typescript和JavaScript之上构建高效、可伸缩的企业级服务器端应用程序
+    - 基于typescript编写并且结合了OOP（面向对象编程），FP（函数式编程）和FRP（函数式响应编程）的相关理念
+    - 在设计上的很多另个来自于angular，angular的很多模式又来自于Java中的spring框架，依赖注入，面向切面编程等
+    - 所以也可以认为nest是nodejs版的spring框架
+    - 框架底层HTTP平台默认是基于express实现，无须担心第三方库缺失
+    - 从技术上说，nest可以在创建适配器后使用任何node HTTP框架，开箱即用的HTTP平台：express、fastify
+    - 核心思想：提供了一个层与层直接的耦合度极小，抽象化极高的一个架构体系
+
+
+环境搭建
+    - 安装nodejs环境
+    - 安装nest npm i -g @nestjs/cli
+    - 创建项目 nest new nestDemo01
+
+
+运行项目
+    nestjs热更新
+        - nestjs自带nodemon可以热更新，启动方式npm run start:dev(package.json里)
+
+开发目录
+    - src下
+        - main.js可以配置全局中间件或者配置平台的一些操作，比如加载express平台，现在加载了app.module.ts根模块
+        - app.module.ts根模块里定义了app.controller.ts控制器和app.service.ts服务
+        - 通过nestcli创建控制器 nest g controller news
+            - 生成一个目录，创建了两个文件，还更新了根模块
+            - @controller类装饰器匹配一级路由，@get方法装饰器匹配二级路由，下面的方法可以随便写，装饰器后边不要写分号，要在nestjs/common引入
+
+装饰器
+    - 类装饰器、方法装饰器、属性装饰器，需要引入
+        - @Controller
+        - @Get('a*a')    模糊匹配
+        - @Post
+        - @Put/@Delete/@Patch/@Options/@Head/@All
+    - 在nestjs中获取get传值或者post提交的数据的话可以使用装饰器来获取
+        - 注意后面不要加分号
+        - @request()                        req     相当于express里面的用法
+        - @response()                       res     res.redirect('/user')路由跳转
+        - @next()                           next
+        - @session()                        req.session
+        - @param(key?: string)              req.params / req.params[key]        获取动态路由
+        - @body(key?: string)               req.body / req.body[key]            获取post传值
+        - @query(key?: string)              req.query / req.query[key]          获取get传值
+        - @headers(name?: string)           req.headers / req.headers[name]
+
+NestJS中配置静态资源
+    - 需要引入一个HTTP平台NestExpressApplication
+        const app = await NestFactory.create<NestExpressApplication>(AppModule);
+    - app.useStaticAssets('public')
+    - 配置虚拟目录
+
+模板引擎
+    - npm i ejs --save  安装
+    - app.setBaseViewsDir(join(__dirname, '..', 'views')) 
+      app.setViewEngine('hbs')  配置
+
+NestJS中的服务
+    - 相当于一块公共功能，可以在任意控制器里面调用

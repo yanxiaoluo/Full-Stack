@@ -1,0 +1,37 @@
+一种数据查询语言，是REST API的替代品
+
+restful：representational state transfer表属性状态转移，本质上就是用定义URI，通过api接口来取得资源。通用系统架构，不受语言限制
+
+restful一个接口只能返回一个资源，graphql一次可以获取多个资源
+restful用不同的url来区分资源，graphql用类型来区分资源
+
+特点
+    - 请求需要的数据，不多不少
+    - 获取多个资源，只用一个请求
+    - 描述所有可能类型的系统，便于维护，根据需求平滑演进，添加或者隐藏字段
+
+基本类型
+    - String
+    - Int
+    - Float
+    - Boolean
+    - ID
+
+类型代表数组，例如：[Int]代表整型数组
+
+输入类型
+    - query 查询
+    - input 输入
+
+参数传递
+    - 和js传递参数一样，小括号内定义形参，但是参数需要定义类型
+    - !(叹号)代表参数不能为空
+    type query {
+        rollDice(numDice: Int!, numSides: Int): [Int]
+    }
+
+修改数据
+    - mutation
+    - 定义的时候必须要有query
+
+使用GraphQLObjectType定义type

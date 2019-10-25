@@ -26,11 +26,32 @@ cat [file name]
     - git diff [file name]  将工作区中的文件和暂存区进行比较
     - git diff [本地库中历史版本] [文件名]  将工作区中的文件和本地库历史记录比较
     - git diff  查看多个文件进行比较
+    - git diff branch1 branch2 --stat   显示出所有有差异的文件列表
+    - git diff branch1 branch2 [file-path]   显示指定文件的详细差异
+    - git diff branch1 branch2          显示出所有有差异的文件的详细差异
 
 分支操作
     - git branch [分支名]    创建分支
     - git branch -v 查看分支
     - git checkout [分支名]
+    - git checkout -b 切换远程分支
+    - git checkout -t 新建本地分支，将远程分支提取出来
     - git merge
 
-git底层采用的是sha1算法 
+git底层采用的是sha1算法
+
+1、git stash :暂存本地代码
+
+2、git pull origin develop : 获取远程分支代码
+
+3、git stash pop:恢复之前暂存的文件
+
+
+git 误删文件和恢复指令
+git stash pop stash@{0}
+
+1、git fsck --lost -found :查看最近移除的文件.
+
+2、git show  '误删编号'：查看删除文件内容
+
+3、git merge ‘误删编号’： 本地合并误删的文件内容

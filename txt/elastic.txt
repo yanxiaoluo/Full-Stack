@@ -1,0 +1,24 @@
+介绍
+    - 分布式多用户能力的全文搜索引擎
+    - 基于RESTful web接口
+    - Java语言开发
+    - 接近实时的搜索
+
+添加环境变量
+    JAVA_HOME   C:\Program Files\Java\jdk1.8.0_201
+
+测试
+    cmd: java -version
+
+安装
+    - 解压运行elasticsearch.bat
+    - 访问127.0.0.1:9200
+    - 可能出现的问题：一闪即逝是因为环境变量里面JAVA_HOME没有配好
+
+MySQL       es
+数据库      索引
+表          类型
+行          文档
+字段        字段
+
+7.0之后es没有多类型，默认一个index只有一个_doc的类型

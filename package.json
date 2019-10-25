@@ -23,6 +23,7 @@
     "express-route": "^0.1.4",
     "express-static": "^1.2.6",
     "gbk": "^0.1.0",
+    "graphql": "^14.5.4",
     "jsdom": "^15.1.0",
     "koa": "^2.7.0",
     "koa-better-body": "^3.0.4",
@@ -47,5 +48,10 @@
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.4.1"
+  },
+  "dependencies": {
+    "express-graphql": "^0.9.0",
+    "koa-graphql": "^0.8.0",
+    "koa-mount": "^4.0.0"
   }
 }
