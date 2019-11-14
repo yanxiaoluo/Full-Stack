@@ -5,9 +5,27 @@ python魔法命令
     %%time      只执行一次，多行
     %lsmagic    查看所有魔法命令
 
+python API
+    X[:2,:3]    分片处理，取两行三列
+    x[::2]      间隔为2
+    X[::-1, ::-1]反转矩阵
+    X[0, :]     取第一行
+    X[:, 0]     取第一列
+
 numpy API
+    np.random.normal? 调文档
     arrange([默认从0起],[结束],[步长])
     linspace([起始点],[结束点],[等差数列的元素个数])
+    random.randint([起始点],[结束点(永远取不到)],size=[个数])，整数
+    random.random([起始点],[结束点(永远取不到)],size=[个数])，浮点数，在0-1之间
+    np.random.seed(555)指定一个随机种子，使得random的数值永远一样
+    np.random.normal(10,100)均值为0，方差为100的随机数
+
+    reshape(2, 5)改变数组维度
+    reshape(10, -1)不管有多少列，只要10行，自动计算
+    reshape(-1, 10)不管有多少列，只要10行，自动计算
+
+    concatenate([x, y], axis=1)合并元素，axis默认为0，沿着行维度进行拼接，1为沿着列维度进行拼接，一维向量不可以和多维向量拼接
 
 
 机器学习
