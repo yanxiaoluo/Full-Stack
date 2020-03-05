@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./Promise_class.js"></script>
+</head>
+<body>
+    <script>
+        /* let p = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                // resolve(1)
+                reject(2)
+                // console.log('reject()改变状态之后')
+            }, 100)
+        }).then(
+            value => {
+                console.log('onResolved()1', value)
+            },
+            reason => {
+                console.log('onRejected()1', reason)
+                // return 3
+                // throw 4
+                return new Promise((resolve, reject) => reject(5))
+            }
+        ).then(
+            value => {
+                console.log('onResolved()2', value)
+            },
+            reason => {
+                console.log('onRejected()2', reason)
+                throw 6
+            }
+        ).catch(
+            reason => {
+                console.log('onRejected()3', reason)
+                return new Promise(() => {})
+            }
+        ).then(
+            value => {
+                console.log('onResolved()4', value)
+            },
+            reason => {
+                console.log('onRejected()4', reason)
+            }
+        ) */
+        // const p1 = Promise.resolve(1)
+        // const p2 = Promise.resolve(Promise.resolve(2))
+        // const p3 = Promise.resolve(Promise.reject(3))
+        // const p4 = Promise.reject(4)
+        const p5 = Promise.resolveDelay(55, 2000)
+        const p6 = Promise.rejectDelay(66, 3000)
+
+        // p1.then(value => console.log('p1', value))
+        // p2.then(value => console.log('p2', value))
+        // p3.catch(reason => console.log('p3', reason))
+
+        // const pAll = Promise.all([8, p1, p2, 7])
+        // const pAll = Promise.race([7, p1, p2, p3])
+        /* pAll.then(
+            values => {
+                console.log('onResolved', values)
+            },
+            reason => console.log('onRejected', reason)
+        ) */
+
+        p5.then(value => {console.log('p5', value)})
+        p6.catch(reason => {console.log('p6', reason)})
+    </script>
+</body>
+</html>

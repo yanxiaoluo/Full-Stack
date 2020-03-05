@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    </style>
+</head>
+<body>
+    <input type="button" value="点击" id="input">
+    <h1 id="H1">哈哈哈</h1>
+    <script>
+        document.getElementById('input').addEventListener('click', function (e) {
+            document.getElementById('H1').innerHTML = '嘿嘿嘿'
+            console.log(e.currentTarget)
+            console.log(e.target)
+        })
+    </script>
+</body>
+</html>

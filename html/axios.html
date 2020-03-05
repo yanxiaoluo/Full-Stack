@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function axios({
+            url,
+            method='GET',
+            params={},
+            data={}
+        }) {
+            return new Promise((resolve, reject) => {
+                const request = new XMLHttpRequest()
+
+                method = method.toUpperCase()
+
+                let queryString = ''
+                Object.keys(params).forEach(key => {
+                    queryString += `${key}=${params[key]}&`
+                })
+                if (queryString) {
+                    queryString = queryString.slice(0, queryString.length-1)
+                }
+
+                request.open(method, `${url}?${queryString}`, true)
+                if (method === 'GET' || method === 'DELETE') {
+                    request.send()
+                } else if (method === 'POST' || method === 'PUT') {
+                    request.setRequestHeader('Content-Type', 'application/json;charset=utf-8')
+                    request.send(JSON.stringify(data))
+                }
+
+                request.onreadystatechange = function () {
+                    if (request.readyState !== 4) return
+
+                    const { status, statusText } = request
+
+                    if (request.status >= 200 && request.status < 300 || request.status === 304) {
+                        const response = {
+                            data: JSON.parse(request.response),
+                            status,
+                            statusText
+                        }
+                        resolve(response)
+                    } else {
+                        reject(new Error('request error status is' + status))
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+    <button onclick="testGet()">GET</button>
+    <button onclick="testPost()">POST</button>
+    <button onclick="testPut()">PUT</button>
+    <button onclick="testDelete()">DELETE</button>
+    <script>
+        function testGet() {
+            axios({
+                url: 'http://localhost:3000/posts',
+                method: 'GET',
+                // params: {
+                //     id: 1,
+                //     xxx: 'abc'
+                // }
+            }).then(
+                data => {
+                    console.log(data)
+                },
+                error => {
+                    alert(error)
+                }
+            )
+        }
+        
+        function testPost() {
+            axios({
+                url: 'http://localhost:3000/posts',
+                method: 'POST',
+                data: {
+                    'title': 'jsontttt',
+                    'author': 'tttttttttttttt'
+                }
+            }).then(
+                data => {
+                    console.log(data)
+                },
+                error => {
+                    alert(error)
+                }
+            )
+        }
+
+        function testDelete() {
+            axios({
+                url: 'http://localhost:3000/posts/4',
+                method: 'DELETE'
+            }).then(
+                data => {
+                    console.log(data)
+                },
+                error => {
+                    alert(error)
+                }
+            )
+        }
+        
+        function testPut() {
+            axios({
+                url: 'http://localhost:3000/posts/4',
+                method: 'PUT',
+                data: {
+                    'title': 'XXXXXX',
+                    'author': 'RRRRRR'
+                }
+            }).then(
+                data => {
+                    console.log(data)
+                },
+                error => {
+                    alert(error)
+                }
+            )
+        }
+
+    </script>
+</body>
+</html>

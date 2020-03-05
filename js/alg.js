@@ -1,3 +1,10 @@
+function each(arr, callback) {
+    for (let i = 0; i < arr.length; i++) {
+        let flag = callback.call(arr, arr[i], i)
+        if (!flag) break
+    }
+}
+
 function Stack() {
     this.items = []
 
@@ -623,7 +630,7 @@ function Dictionary () {
         return true
     }
     Dictionary.prototype.get = function (key) {
-        return this.items.has(key) ? this.items[key] : undefined
+        return this.has(key) ? this.items[key] : undefined
     }
     Dictionary.prototype.keys = function (key, value) {
         return Object.keys(this.items)
@@ -638,8 +645,6 @@ function Dictionary () {
         this.items = {}
     }
 }
-
-
 
 // 封装哈希表类
 function HashTable() {
@@ -1023,50 +1028,260 @@ console.log(bst.max())
 console.log(bst.search(2))
 
 
-function BinarySearchTree() {
-    function Node(key) {
-        this.key = key
-        this.color = 'red'
-        this.left = null
-        this.right = null
-    }
-    this.root = null
+// function BinarySearchTree() {
+//     function Node(key) {
+//         this.key = key
+//         this.color = 'red'
+//         this.left = null
+//         this.right = null
+//     }
+//     this.root = null
 
-    BinarySearchTree.prototype.insertAvl = function (key) {
-        let newNode = new Node(key)
-        if (this.root == null) {
-            let newNode = new Node(key)
-            this.root = newNode
-            this.root.color = 'black'
-        } else {
-            this.insertAvlNode(this.root, newNode)
-        }
-    }
+//     BinarySearchTree.prototype.insertAvl = function (key) {
+//         let newNode = new Node(key)
+//         if (this.root == null) {
+//             let newNode = new Node(key)
+//             this.root = newNode
+//             this.root.color = 'black'
+//         } else {
+//             this.insertAvlNode(this.root, newNode)
+//         }
+//     }
 
-    BinarySearchTree.prototype.situation = function (pnode, unode, gnode) {
-        if (pnode.color == 'red' && unode.color == 'red' && gnode.color == 'black') {
+//     BinarySearchTree.prototype.situation = function (pnode, unode, gnode) {
+//         if (pnode.color == 'red' && unode.color == 'red' && gnode.color == 'black') {
             
+//         }
+//     }
+
+//     BinarySearchTree.prototype.insertAvlNode = function (node, newNode) {
+//         if (newNode.key < node.key) {
+//             if (node.left == null ) {
+//                 if (node.color != 'red') {
+//                     node.left = newNode
+//                 } else {
+
+//                 }
+                
+//             } else {
+//                 this.insertNode(node.left, newNode)
+//             }
+//         } else {
+//             if (node.right == null && node.color != 'red') {
+//                 node.right = newNode
+//             } else {
+//                 this.insertNode(node.right, newNode)
+//             }
+//         }
+//     }
+// }
+
+function Graph() {
+    this.vertexes = []
+    this.edges = new Dictionary()
+
+    Graph.prototype.addVertex = function (v) {
+        this.vertexes.push(v)
+        this.edges.set(v, [])
+    }
+
+    Graph.prototype.addEdge = function (v1, v2) {
+        this.edges.get(v1).push(v2)
+        this.edges.get(v2).push(v1)
+    }
+
+    Graph.prototype.toString = function () {
+        let resultString = ''
+
+        for (let i = 0; i < this.vertexes.length; i++) {
+            console.log(this.vertexes[i])
+            resultString += this.vertexes[i] + '->'
+            let vEdge = this.edges.get(this.vertexes[i])
+            for (let j = 0; j < vEdge.length; j++) {
+                resultString += vEdge[j] + '-'
+            }
+            resultString += '\n'
+        }
+
+        return resultString
+    }
+
+    Graph.prototype.initializeColor = function () {
+        let colors = []
+
+        for (let i = 0; i < this.vertexes.length; i++) {
+            colors[this.vertexes[i]] = 'white'
+        }
+
+        return colors
+    }
+
+    Graph.prototype.bfs = function (initV, handler) {
+        let colors = this.initializeColor()
+        let queue = new Queue()
+        queue.enqueue(initV)
+
+        while (!queue.isEmpty()) {
+            let v = queue.dequeue()
+            let vList = this.edges.get(v)
+            colors[v] = 'gray'
+
+            for (let i = 0; i < vList.length; i++) {
+                let e = vList[i]
+                if (colors[e] == 'white') {
+                    queue.enqueue(e)
+                    colors[e] = 'gray'
+                }
+            }
+
+            handler(v)
+            colors[v] = 'black'
         }
     }
 
-    BinarySearchTree.prototype.insertAvlNode = function (node, newNode) {
-        if (newNode.key < node.key) {
-            if (node.left == null ) {
-                if (node.color != 'red') {
-                    node.left = newNode
-                } else {
+    Graph.prototype.dfs = function (initV, handler) {
+        let colors = this.initializeColor()        
+        this.dfsVisit(initV, colors, handler)
+    }
 
-                }
-                
-            } else {
-                this.insertNode(node.left, newNode)
-            }
-        } else {
-            if (node.right == null && node.color != 'red') {
-                node.right = newNode
-            } else {
-                this.insertNode(node.right, newNode)
+    Graph.prototype.dfsVisit = function (v, colors, handler) {
+        colors[v] = 'gray'
+        handler(v)
+
+        let vList = this.edges.get(v)
+        for (let  i = 0; i < vList.length; i++) {
+            let e = vList[i]
+            if (colors[e] == 'white') {
+                this.dfsVisit(e, colors, handler)
             }
         }
+
+        colors[v] = 'black'
     }
 }
+
+var g = new Graph()
+var myTexes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
+for (let i = 0; i < myTexes.length; i++) {
+    g.addVertex(myTexes[i])
+}
+g.addEdge('A', 'B')
+g.addEdge('A', 'C')
+g.addEdge('A', 'D')
+g.addEdge('C', 'D')
+g.addEdge('C', 'D')
+g.addEdge('D', 'G')
+g.addEdge('D', 'H')
+g.addEdge('B', 'E')
+g.addEdge('B', 'F')
+g.addEdge('E', 'I')
+
+console.log(g.toString())
+console.log(g.initializeColor())
+let result = ''
+g.bfs(myTexes[0], function (v) {
+    result += v + ' '
+})
+console.log(result)
+
+result = ''
+g.dfs(myTexes[0], function (v) {
+    result += v + ' '
+})
+console.log(result)
+
+function ArrayList() {
+    this.array = []
+
+    ArrayList.prototype.insert = function (item) {
+        this.array.push(item)
+    }
+
+    ArrayList.prototype.toString = function () {
+        return this.array.join('-')
+    }
+
+    ArrayList.prototype.swap = function (m, n) {
+        let temp = this.array[m]
+        this.array[m] = this.array[n]
+        this.array[n] = temp
+    }
+
+    // 冒泡排序
+    ArrayList.prototype.bubbleSort = function () {
+        let len = this.array.length
+        for (let i = len - 1; i >= 0; i--) {
+            for (let j = 0; j < i; j++) {
+                if (this.array[j] > this.array[j+1]) {
+                    this.swap(j, j+1)
+                }
+            }
+        }
+    }
+    // 选择排序
+    ArrayList.prototype.selectSort = function () {
+        let len = this.array.length
+        for (let i = 0; i < len - 1; i++) {
+            let minum = i
+            for (let j = i + 1; j < len; j++) {
+                if (this.array[j] < this.array[minum]) {
+                    minum = j
+                }
+            }
+            this.swap(i, minum)
+        }
+    }
+    // 插入排序
+    ArrayList.prototype.insertSort = function () {
+        let len = this.array.length
+
+        for (let i = 1; i < len; i++) {
+            let temp = this.array[i]
+            let j = i
+            while(this.array[j-1] > temp && j > 0) {
+                this.array[j] = this.array[j-1]
+                j--
+            }
+
+            this.array[j] = temp
+        }
+    }
+    // 希尔排序
+    ArrayList.prototype.shellSort = function () {
+        let len = this.array.length
+        let gap = Math.floor(len / 2)
+
+        while(gap >= 1) {
+            for (let i = gap; i < len; i++) {
+                let temp = this.array[i]
+                let j = i
+                while(this.array[j-gap] > temp && j > gap-1) {
+                    this.array[j] = this.array[j-gap]
+                    j -= gap
+                }
+                this.array[j] = temp
+            }
+            gap = Math.floor(gap / 2)
+        }
+    }
+    // 快速排序
+
+}
+
+let list = new ArrayList()
+list.insert(66)
+list.insert(88)
+list.insert(12)
+list.insert(87)
+list.insert(100)
+list.insert(5)
+list.insert(566)
+list.insert(23)
+// list.bubbleSort()
+// console.log(list)
+// list.selectSort()
+// console.log(list)
+// list.insertSort()
+// console.log(list)
+list.shellSort()
+console.log(list)
