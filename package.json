@@ -24,7 +24,7 @@
     "express-static": "^1.2.6",
     "gbk": "^0.1.0",
     "graphql": "^14.5.4",
-    "jsdom": "^15.1.0",
+    "jsdom": "^16.5.0",
     "koa": "^2.7.0",
     "koa-better-body": "^3.0.4",
     "koa-convert": "^1.2.0",
